@@ -1,0 +1,125 @@
+#+TITLE: tmux workflow
+#+AUTHOR: Cun Gong
+* 基礎知識
+** 安裝 tmux
+*tmux* 依賴 libevent 庫, 先編譯安裝:
+#+BEGIN_SRC sh
+  # uncompress the .tar.gz file
+  gtar xfz libevent-2.0.21-stable.tar.gz
+  cd libevent-2.0.21-stable
+
+  # install the gnu m4 and autoconf tools
+  yum install -y m4
+  ln -sf /opt/freeware/bin/m4 /usr/bin/
+
+  yum whatprovides autoconf autoheader
+  yum install -y automake autoconf
+
+  # change AC_AUTOCONF_VERSION to the current version
+  aclocal --version
+  vi aclocal.m4
+
+  # install
+  autoheader -I.
+  autoconf
+  ./configure
+
+  gmake -j4
+  gmake install
+
+#+END_SRC 
+在 AIX 編譯安裝 tmux 有點麻煩, 要手動設置使用 ncurses 庫 (否則出現 term.h 無法識
+別的警告並影響色彩的顯示):
+#+BEGIN_SRC sh
+  cd tmux-1.9a-source
+  autoheader
+  autoconf
+  ./configure --prefix=/usr/local \
+              LDFLAGS="-L/usr/local/lib -L/opt/freeware/lib" \
+              CPPFLAGS="-I/opt/freeware/include/ncurses" LIBS="-lncurses" CC=xlc
+  gmake -j4
+  gmake install
+
+#+END_SRC
+** 開始使用 tmux
+
+** 設置 PuTTY
+- PuTTY configuration -> Window -> Colours -> Allow terminal to use xterm
+  256-colour mode
+- PuTTY configuration -> Connection -> Data -> Terminal-type string ->
+  xterm-256color
+
+* 腳本定制 tmux 環境
+在項目工作時, 可能需要運行一大堆的工具和命令集. 我們可以使用 tmux 的
+client-server 模型, 來創建一個定制的腳本來自動地構建開發環境, 分割窗口並運行程序.
+
+* 和 git 集成
+以 *udeploy* (ico) 項目為例, 整個項目的主目錄為 */smgroup/install_scripts/ico*, 有以下分支:
+
+- audit - 應對審計的檢查腳本, 目前暫不使用.
+- master - 最早的 ico 項目是建立在 tunimsvr 上, 現在已經不用, 僅僅保留.
+- qunimsvr - 這是目前的主分支, 總是用於開新的 release 分支, 並且所有 release 分
+  支都是將被合併在這裡. 
+
+對於開發者來說, 常規步驟將是:
+1. Fork the project to create developer's own repository in GitLab.
+2. Clone the Git repository with
+   #+begin_src sh
+     cd /smgroup/install_scripts
+     git clone git@bocgitsvr.bocmo.com:${developer}/udeploy.git ./ico_${developer}
+
+   #+end_src
+
+3. Setup ssh access 
+   #+begin_example
+  $ ssh-keygen -f ~/.ssh/${developer}_id_rsa
+
+  ## Copy the content of ${developer}_id_rsa.pub to 'SSH Keys' in User Settings of gitlab
+
+  $ eval "$(ssh-agent -s)"
+  $ ssh-add ~/.ssh/${developer}_id_rsa
+  $ ssh -T git@bocgitsvr.bocmo.com
+  Welcome to GitLab, ${developer}!
+#+end_example
+
+4. Branch from origin/qunimsvr with
+   #+begin_src sh
+     git fetch origin
+     git checkout -b ${developer} origin/qunimsvr
+   #+end_src
+
+5. Make changes and commit them with 'git add' and 'git commit'
+
+6. Push the new commit to the developer's repository
+   #+begin_src sh
+     git push -u origin ${developer}
+   #+end_src
+
+7. Create merge request to *qunimsvr* branch of udeploy, and ask other team members
+   for review and feedback of the changes.
+
+These steps allow a core maintainer to merge a branch into *qunimsvr* branch
+after successful review:
+
+1. Fetch and check out the branch for this merge request
+   #+begin_src sh
+     git checkout -D ${developer}/udeploy-${developer}
+     git fetch git@bocgitsvr.bocmo.com:${developer}/udeploy.git ${developer}
+     git checkout -b ${developer}/udeploy-${developer} FETCH_HEAD
+   #+end_src
+2. Review the changes locally
+   #+begin_src sh
+     # compare two branch
+     git diff qunimsvr..${developer}/udeploy-${developer}
+   #+end_src
+3. Merge the branch and fix any conflicts that come up 
+   #+begin_src sh
+     git checkout qunimsvr
+     git merge --no-ff ${developer}/udeploy-{developer}
+   #+end_src
+4. Push the result of the merge to GitLab
+   #+begin_src sh
+     git push origin qunimsvr
+   #+end_src
+
+*Tip*: You can also checkout merge requests locally by [[http://bocgitsvr.bocmo.com/gitlab/help/user/project/merge_requests.md#checkout-merge-requests-locally][following these guidelines]].
