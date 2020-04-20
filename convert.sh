@@ -1,7 +1,16 @@
 [ -z "$1" ] && { echo "convert.sh <file>"; exit 1; }
+sed -i '/\\begin{longtable}/{
+i\
+\\begin{figure}[H]
+}
+/\\end{longtable}/{
+a\
+\\end{figure}
+}' $1
+
 sed -i '/\\begin{verbatim}/{
 a\
-\\lstset{basicstyle=\\scriptsize,language=C}\
+\\lstset{basicstyle=\\scriptsize,language=sh}\
 \\begin{lstlisting}
 d
 }
