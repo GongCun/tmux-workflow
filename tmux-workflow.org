@@ -1,3 +1,19 @@
+#+STARTUP: align indent
+#+LATEX_COMPILER: xelatex
+#+LaTeX_CLASS_OPTIONS: [12pt,a4paper] 
+#+LATEX_HEADER: \usepackage[UTF8, heading = false, scheme = plain]{ctex}
+#+OPTIONS: tex:t 
+#+LATEX_HEADER: \usepackage{parskip}
+#+LATEX_HEADER: \usepackage{mdframed}
+#+LATEX_HEADER: \usepackage{xcolor}
+#+LATEX_HEADER: \usepackage{listings}
+#+LATEX_HEADER: \usepackage{caption}
+#+LATEX_HEADER: \usepackage{fancyvrb}
+#+LATEX_HEADER: \usepackage{float}
+#+LATEX_HEADER: \renewcommand*{\ttdefault}{qcr}
+#+LATEX_HEADER: \usepackage[a4paper,left=2cm,right=2cm,top=1.8cm,bottom=1.8cm]{geometry}
+
+
 #+TITLE: tmux workflow
 #+AUTHOR: Cun Gong
 * 基礎知識
@@ -176,26 +192,47 @@ new-window -n cmd "topas"
 
 #+CAPTION: Commands for Sessions, Windows, and Panes (Details see ~/.tmux.conf)
 #+ATTR_HTML: :border 2 :rules all :frame border
+#+ATTR_LATEX: :environment longtable :align |l|p{8cm}|
+|-----------------------------------+-------------------------------------------------------------------------------------|
 | Command                           | Description                                                                         |
 |-----------------------------------+-------------------------------------------------------------------------------------|
 | tmux new-session                  | Creates a new session without a name. Can be shortened to tmux new or simply tmux.  |
+|-----------------------------------+-------------------------------------------------------------------------------------|
 | tmux new -s development           | Creates a new session called "development".                                         |
+|-----------------------------------+-------------------------------------------------------------------------------------|
 | tmux new -s development -n editor | Creates a session named "development" and names the first window "editor".          |
+|-----------------------------------+-------------------------------------------------------------------------------------|
 | tmux attach -t development        | Attaches to a session named "development".                                          |
+|-----------------------------------+-------------------------------------------------------------------------------------|
 | tmux list-keys                    | List key bindings.                                                                  |
+|-----------------------------------+-------------------------------------------------------------------------------------|
 | PREFIX d                          | Detaches from the session, leaving the session running in the background.           |
+|-----------------------------------+-------------------------------------------------------------------------------------|
 | PREFIX :                          | Enters Command mode.                                                                |
+|-----------------------------------+-------------------------------------------------------------------------------------|
 | PREFIX c                          | Creates a new window from within an existing tmux session. Shortcut for new-window. |
+|-----------------------------------+-------------------------------------------------------------------------------------|
 | PREFIX 0..9                       | Selects windows by number.                                                          |
+|-----------------------------------+-------------------------------------------------------------------------------------|
 | PREFIX w                          | Displays a selectable list of windows in the current session.                       |
+|-----------------------------------+-------------------------------------------------------------------------------------|
 | PREFIX ,                          | Displays a prompt to rename a window.                                               |
+|-----------------------------------+-------------------------------------------------------------------------------------|
 | PREFIX &                          | Closes the current window after prompting for confirmation.                         |
+|-----------------------------------+-------------------------------------------------------------------------------------|
 | PREFIX -                          | Divides the current window in half horizontally.                                    |
+|-----------------------------------+-------------------------------------------------------------------------------------|
 | PREFIX \vert                      | Divides the current window in half vertically.                                      |
+|-----------------------------------+-------------------------------------------------------------------------------------|
 | PREFIX o                          | Cycles through open panes.                                                          |
+|-----------------------------------+-------------------------------------------------------------------------------------|
 | PREFIX SPC                        | Cycles through the various pane layouts.                                            |
+|-----------------------------------+-------------------------------------------------------------------------------------|
 | PREFIX x                          | Closes the current pane after prompting for confirmation.                           |
+|-----------------------------------+-------------------------------------------------------------------------------------|
 | PREFIX C-q                        | Momentarily displays pane numbers in each pane.                                     |
+|-----------------------------------+-------------------------------------------------------------------------------------|
+
 * 配置 tmux 
 在默認情況下, tmux 會在兩個位置查找配置文件. 首先查找 ~/.tmux.conf 作為系統配
 置, 然後在當前用戶的主目錄下查找 /etc/tmux.conf 文件.
@@ -264,21 +301,33 @@ bind C-a send-prefix
 
 #+CAPTION: For Future Reference
 #+ATTR_HTML: :border 2 :rules all :frame border
+#+ATTR_LATEX: :environment longtable :align |l|p{9cm}|
+|-------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Command                             | Description                                                                                                                                                                                                                                                            |
 |-------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | set -g prefix C-a                   | Sets the key combination for the Prefix key.                                                                                                                                                                                                                           |
+|-------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | set -sg escape-time n               | Sets the amount of time (in milliseconds) tmux waits for a keystroke after pressing Prefix.                                                                                                                                                                            |
+|-------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | source-file [file]                  | Loads a configuration file. Use this to reload the existing configuration or bring in additional configuration options later.                                                                                                                                          |
+|-------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | bind C-a send-prefix                | Configures tmux to send the prefix when pressing the Prefix combination twice consecutively.                                                                                                                                                                           |
+|-------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | bind-key [key] [command]            | Creates a keybinding that executes the specified command. Can be shortened to bind                                                                                                                                                                                     |
+|-------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | bind-key -r [key] [command]         | Creates a keybinding that is repeatable, meaning you only need to press the Prefix key once, and you can press the assigned key repeatedly afterwards. This is useful for commands where you want to cycle through elements or resize panes. Can be shortened to bind. |
+|-------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | unbind-key [key]                    | Removes a defined keybinding so it can be bound to a different command. Can be shortened to unbind.                                                                                                                                                                    |
+|-------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | display-message or display          | Displays the given text in the status message.                                                                                                                                                                                                                         |
+|-------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | set-option [flags] [option] [value] | Sets options for sessions. Using the -g flag sets the option for all sessions.                                                                                                                                                                                         |
+|-------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | set-window-option [option] [value]  | Sets options for windows, such as activity notifications, cursor movement, or other elements related to windows and panes.                                                                                                                                             |
+|-------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | set -a                              | Appends values onto existing options rather than replacing the option’s value.                                                                                                                                                                                        |
+|-------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 #+TBLFM: 
-
 
 
 * 腳本定制 tmux 環境
@@ -412,6 +461,7 @@ after successful review:
 # merge request -> master branch merge the feature
 
 #+CAPTION: Work flow for developer
+
 [[file:./develop-flow.png]]
 
 
@@ -426,13 +476,165 @@ after successful review:
 
 
 * 文本和緩衝區
+在日常工作中, 使用複製粘貼的次數遠超你的想象. 使用 tmux, 可以通過快捷鍵方便地操
+作屏幕內容, 比如複製一段面板內容到另一個面板中去, 或者翻看之前的屏幕輸出. 本章將
+會介紹如何管理 tmux 會話中的文本, 并 DIY 一個插件實現錄屏功能.
+
+** 使用複製模式滾動輸出
+通過定制 ~/.tmux.conf, 按下 'PREFIX ESC' 將進入複製模式 (類似于 vi), 我們在
+~/.tmux.conf 中配置使用了 vi 中的移動鍵, 這樣操作將非常方便:
+#+begin_example
+setw -g mode-keys vi
+#+end_example
+這個配置可以使用 =h, j, k, l= 在緩衝區中移動, 要離開複製模式, 只需按下 ENTER 鍵.
+我們也可以使用 =w, b, f/F, t/T= 等功能鍵輔助移動.
+
+*** 在緩衝區中快速移動
+通過 vi 的滾屏鍵可以在緩衝區中快速移動, 這些鍵包括:
+- C-f :: 向下翻滾一屏
+- C-b :: 向上翻滾一屏
+- g :: 跳轉到緩衝區歷史的最頂部
+- G :: 跳轉到緩衝區歷史的最底部
+
+*** 查找緩衝區
+在複製模式中按下 *?* 或 */* 鍵可以向下或向上查找 char/string, 跳轉到下一個匹配按
+*n*, 跳轉到上一個匹配按 *N* (如果按下 ? 鍵, 則方向相反).
+
+*** 複製和粘貼文本
+複製和粘貼文本也非常類似於 vi 操作, 在複製模式中按下 SPACE 鍵將開始選擇文本, 然
+後可以繼續通過 vi 快捷鍵移動選擇區域, 按下 *y* 鍵將被選擇的區域複製到粘貼緩衝區
+中[fn:3]. 要粘貼剛才捕獲的內容, 則直接按下 *PREFIX p* 鍵. 由於粘貼緩衝區是一個環
+形棧, 每複製一個新的文本, 就會把緩存放在棧的最頂端, 可以通過以下鍵綁定來選擇或操
+作粘貼緩衝區:
+
+- PREFIX C-s :: 顯示粘貼緩衝區內容
+- PREFIX C-l :: 列出複製文本清單
+- PREFIX C-c :: 選擇要複製的文本 (可以通過 j,k 等鍵移動)
+- PREFIX C-d :: 刪除棧頂的文本. 建議使用 =PREFIX :[RET] deleteb -b buffer-name= 來刪除
+                指定的緩衝區較好.
+
 
 ** 如何創建 tmux 插件
+由於多重緩衝區的操作已經較為複雜了, 而對於屏幕的記錄, 快照, 及歷史輸出的保存,
+已經不能通過簡單的鍵綁定來方便地實現了, 我們可以嘗試自己寫插件.
+
+*** 創建一個新的 git 項目
+
+    #+begin_example
+      $ mkdir -p ${TMUX_PLUGIN_PATH}/my-logging
+      $ cd ${TMUX_PLUGIN_PATH}/my-logging
+      $ git init
+    #+end_example
+
+*** 創建 =*.tmux= 插件運行文件
+    #+begin_example
+      $ touch my-logging.tmux
+      $ chmod u+x my-logging.tmux
+    #+end_example
+
+*** 創建關於插件的鍵綁定
+我們實現以下鍵綁定功能:
+
+1. =PREFIX M-l= - Trigger 終端錄屏 (Meta 是指 Alt 鍵).
+2. =PREFIX M-c= - 將當前畫面 dump 下來.
+3. =PREFIX M-h= - 將當前窗口或面板的所有歷史輸出保存下來.
+
+因此 *my-logging.tmux* 的內容如下:
+#+begin_src sh
+  #!/usr/bin/env bash
+
+  CURRENT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+  tmux bind-key M-l run-shell "$CURRENT_DIR/scripts/my_logging.sh"
+  tmux bind-key M-c run-shell "$CURRENT_DIR/scripts/my_capture.sh"
+  tmux bind-key M-h run-shell "$CURRENT_DIR/scripts/my_history.sh"
+#+end_src
+
+注意調用的 *.sh* 腳本必須有可執行權限.
+
+*** 實現插件功能
+以 *my_logging.sh* 為例:
+#+begin_src sh
+  #!/usr/bin/env bash
+
+  saved_display_time=$(tmux show-option -gqv display-time)
+  if [ -z "saved_display_time" ]; then
+      saved_display_time=750;
+  fi
+
+  file="/tmp/tmux-log-#S.#W.#P.%Y-%b-%d-%R.log"
+  tmux set-option -gq display-time 5000
+  tmux pipe-pane -o "cat >>$file"
+  tmux display-message "Screen logging to $file"
+  tmux set-option -gq display-time ${saved_display_time}
+#+end_src
+其實際調用的是 pipe-pane 命令, 并增加了消息顯示等功能.
+
+*** 測試插件
+執行以下命令檢查插件是否有效:
+#+begin_example
+$ ./my-logging.tmux
+#+end_example
+
+如果插件有效, 可以在 ~/.tmux.conf 中增加如下配置:
+#+begin_example
+run-shell /smgroup/tmux/plugin/my-logging/my-logging.tmux
+#+end_example
+這樣確保 tmux 啟動時自動載入插件.
+
+關於如何編寫插件的更多內容, 可以參考[[https://github.com/tmux-plugins/tpm/blob/master/docs/how_to_create_plugin.md][How to create Tmux plugins]].
 
 * 使用 tmux 結對編程
+tmux 最受人們歡迎的功能之一是結對編程 (pair programming). 遠程用戶協作有兩種方式,
+第一種是有一個公用賬戶 (比如 nim 服務器上的 root 用戶), 在這個賬戶下配置 tmux 和
+工作環境; 第二種方法是使用 tmux 的 sockets 連接, 這樣你就可以讓其他用戶連接到你
+的 tmux 會話中而無需共享賬戶信息.
 
-* tmux 技術內幕
+** 通過共享賬戶結對編程
+這是最簡便的方式, A 用戶登錄系統中建立一個會話
+#+begin_example
+$ tmux new -s pairing
+#+end_example
+B 用戶可以 attach 到這個會話進行項目協作
+#+begin_example
+$ tmux a -t pairing
+#+end_example
+
+以上方式 A 和 B 通常會看到相同的內容並在同一個窗口中交互, 但很多時候人們希望能夠
+在獨立的, 不同的窗口工作而不用互相干擾. 使用 "組會話" (grouped session) 可以實現
+這個功能. 首先 A 用戶創建一個會話:
+#+begin_example
+$ tmux new -s pairing
+#+end_example
+B 用戶不是直接 attach 到這個會話, 而是"創建一個新的會話"來加入到這個會話中, 但要
+指定原始會話 pairing, 然後再指定一個B用戶自己的會話名:
+#+begin_example
+  $ tmux new -t pairing -s mysession
+#+end_example
+當第二個會話啟動時, 兩個用戶都可以同時在這個會話里進行交互, 但是每個用戶都可以創
+建相互獨立的窗口. 第二個用戶可以通過 =kill-session= 結束自己的會話, 而原始會話仍
+然存在. 但是, 如果所有的窗口都關閉了, 則原始會話和新會話都會被殺死.
+
+** 使用 Socket 結對編程
+使用 tmux 提供的 socket 支持, 可以讓多個用戶連接到會話而不用共享賬戶. A 用戶先用
+自己的賬戶登錄系統, 并通過 socket 創建一個新的 tmux 會話:
+#+begin_example
+$ tmux -S /var/tmux/pairing
+#+end_example
+B 用戶只要指定 unix domain socket 路徑并連接, 就可以 attach 會話 
+#+begin_example
+$ tmux -S /var/tmux/pairing attach
+#+end_example
+使用這種方式時, ~/.tmux.conf 文件是指第一個啟動這個會話的用戶的配置文件. 另外通
+過 socket 方式啟動的 tmux 會話是不能通過 =tmux ls= 顯示的, 可以通過 *lsof* 來獲
+知:
+#+begin_example
+$ sudo lsof -U | grep '^tmux'
+#+end_example
+
 * Footnotes
+
+[fn:3] 這裡的概念非常類似 emacs. 雖然 tmux 和 vi 模式結合得較好, 但是 tmux 的作
+者其實是 emacs 用戶, 這是我之前在他的某篇文章中看到的.
 
 [fn:2] 通過 vim work-folder 來瀏覽文件. 雖然我使用 emacs, 但是考慮到學習曲線, 仍
 然建議在項目中使用 vim. vim 8.1 增加了 terminal 功能並且自帶 netrw 插件, 值得花
