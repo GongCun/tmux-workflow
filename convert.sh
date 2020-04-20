@@ -10,7 +10,7 @@ a\
 
 sed -i '/\\begin{verbatim}/{
 a\
-\\lstset{basicstyle=\\scriptsize,language=sh}\
+\\lstset{basicstyle=\\footnotesize,language=sh}\
 \\begin{lstlisting}
 d
 }
