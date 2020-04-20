@@ -14,7 +14,7 @@
 #+LATEX_HEADER: \usepackage[a4paper,left=2cm,right=2cm,top=1.8cm,bottom=1.8cm]{geometry}
 
 #+TITLE: tmux workflow
-#+AUTHOR: Cun Gong
+#+AUTHOR: 龔存
 * 基礎知識
 ** 安裝 tmux
 *tmux* 依賴 libevent 庫, 先編譯安裝:
@@ -285,9 +285,9 @@ bind C-a send-prefix
    為了讓 tmux 具有最佳的視覺體驗, 首先要確保終端和 tmux 都運行在 256 色模式中,
    我們首先配置終端.
 *** 設置 PuTTY
- - PuTTY configuration $\rightarrow$ Window -> Colours -> Allow terminal to use xterm
+ - PuTTY configuration $\rightarrow$ Window $\rightarrow$ Colours $\rightarrow$ Allow terminal to use xterm
    256-colour mode
- - PuTTY configuration -> Connection -> Data -> Terminal-type string ->
+ - PuTTY configuration $\rightarrow$ Connection $\rightarrow$ Data $\rightarrow$ Terminal-type string $\rightarrow$
    xterm-256color
 *** 定制顏色
 我們可以通過以下簡單的腳本來測試和選擇想要的顏色
@@ -394,7 +394,8 @@ client-server 模型, 來創建一個定制的腳本來自動地構建開發環�
    #+begin_example
      $ ssh-keygen -f ~/.ssh/${developer}_id_rsa
 
-     ## Copy the content of ${developer}_id_rsa.pub to 'SSH Keys' in User Settings of gitlab
+     ## Copy the content of ${developer}_id_rsa.pub to
+     ## 'SSH Keys' in User Settings of gitlab
 
      $ eval "$(ssh-agent -s)"
      $ ssh-add ~/.ssh/${developer}_id_rsa
@@ -547,9 +548,9 @@ setw -g mode-keys vi
 *** 創建關於插件的鍵綁定
 我們實現以下鍵綁定功能:
 
-1. =PREFIX M-l= - Trigger 終端錄屏 (Meta 是指 Alt 鍵).
-2. =PREFIX M-c= - 將當前畫面 dump 下來.
-3. =PREFIX M-h= - 將當前窗口或面板的所有歷史輸出保存下來.
+1. *PREFIX M-l* Trigger 終端錄屏 (Meta 是指 Alt 鍵).
+2. *PREFIX M-c* 將當前畫面 dump 下來.
+3. *PREFIX M-h* 將當前窗口或面板的所有歷史輸出保存下來.
 
 因此 *my-logging.tmux* 的內容如下:
 #+begin_src sh
