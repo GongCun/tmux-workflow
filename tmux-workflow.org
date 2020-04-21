@@ -1,20 +1,5 @@
-#+STARTUP: align indent
-#+LATEX_COMPILER: xelatex
-#+LaTeX_CLASS_OPTIONS: [12pt,a4paper] 
-#+LATEX_HEADER: \usepackage[UTF8, heading = false, scheme = plain]{ctex}
-#+OPTIONS: tex:t 
-#+LATEX_HEADER: \usepackage{parskip}
-#+LATEX_HEADER: \usepackage{mdframed}
-#+LATEX_HEADER: \usepackage{xcolor}
-#+LATEX_HEADER: \usepackage{listings}
-#+LATEX_HEADER: \usepackage{caption}
-#+LATEX_HEADER: \usepackage{fancyvrb}
-#+LATEX_HEADER: \usepackage{float}
-#+LATEX_HEADER: \renewcommand*{\ttdefault}{qcr}
-#+LATEX_HEADER: \usepackage[a4paper,left=2cm,right=2cm,top=1.8cm,bottom=1.8cm]{geometry}
-
 #+TITLE: tmux workflow
-#+AUTHOR: 龔存
+#+AUTHOR: Cun Gong
 * 基礎知識
 ** 安裝 tmux
 *tmux* 依賴 libevent 庫, 先編譯安裝:
@@ -191,47 +176,26 @@ new-window -n cmd "topas"
 
 #+CAPTION: Commands for Sessions, Windows, and Panes (Details see ~/.tmux.conf)
 #+ATTR_HTML: :border 2 :rules all :frame border
-#+ATTR_LATEX: :environment longtable :align |l|p{8cm}|
-|-----------------------------------+-------------------------------------------------------------------------------------|
 | Command                           | Description                                                                         |
 |-----------------------------------+-------------------------------------------------------------------------------------|
 | tmux new-session                  | Creates a new session without a name. Can be shortened to tmux new or simply tmux.  |
-|-----------------------------------+-------------------------------------------------------------------------------------|
 | tmux new -s development           | Creates a new session called "development".                                         |
-|-----------------------------------+-------------------------------------------------------------------------------------|
 | tmux new -s development -n editor | Creates a session named "development" and names the first window "editor".          |
-|-----------------------------------+-------------------------------------------------------------------------------------|
 | tmux attach -t development        | Attaches to a session named "development".                                          |
-|-----------------------------------+-------------------------------------------------------------------------------------|
 | tmux list-keys                    | List key bindings.                                                                  |
-|-----------------------------------+-------------------------------------------------------------------------------------|
 | PREFIX d                          | Detaches from the session, leaving the session running in the background.           |
-|-----------------------------------+-------------------------------------------------------------------------------------|
 | PREFIX :                          | Enters Command mode.                                                                |
-|-----------------------------------+-------------------------------------------------------------------------------------|
 | PREFIX c                          | Creates a new window from within an existing tmux session. Shortcut for new-window. |
-|-----------------------------------+-------------------------------------------------------------------------------------|
 | PREFIX 0..9                       | Selects windows by number.                                                          |
-|-----------------------------------+-------------------------------------------------------------------------------------|
 | PREFIX w                          | Displays a selectable list of windows in the current session.                       |
-|-----------------------------------+-------------------------------------------------------------------------------------|
 | PREFIX ,                          | Displays a prompt to rename a window.                                               |
-|-----------------------------------+-------------------------------------------------------------------------------------|
 | PREFIX &                          | Closes the current window after prompting for confirmation.                         |
-|-----------------------------------+-------------------------------------------------------------------------------------|
 | PREFIX -                          | Divides the current window in half horizontally.                                    |
-|-----------------------------------+-------------------------------------------------------------------------------------|
 | PREFIX \vert                      | Divides the current window in half vertically.                                      |
-|-----------------------------------+-------------------------------------------------------------------------------------|
 | PREFIX o                          | Cycles through open panes.                                                          |
-|-----------------------------------+-------------------------------------------------------------------------------------|
 | PREFIX SPC                        | Cycles through the various pane layouts.                                            |
-|-----------------------------------+-------------------------------------------------------------------------------------|
 | PREFIX x                          | Closes the current pane after prompting for confirmation.                           |
-|-----------------------------------+-------------------------------------------------------------------------------------|
 | PREFIX C-q                        | Momentarily displays pane numbers in each pane.                                     |
-|-----------------------------------+-------------------------------------------------------------------------------------|
-
 * 配置 tmux 
 在默認情況下, tmux 會在兩個位置查找配置文件. 首先查找 ~/.tmux.conf 作為系統配
 置, 然後在當前用戶的主目錄下查找 /etc/tmux.conf 文件.
@@ -285,9 +249,9 @@ bind C-a send-prefix
    為了讓 tmux 具有最佳的視覺體驗, 首先要確保終端和 tmux 都運行在 256 色模式中,
    我們首先配置終端.
 *** 設置 PuTTY
- - PuTTY configuration $\rightarrow$ Window $\rightarrow$ Colours $\rightarrow$ Allow terminal to use xterm
+ - PuTTY configuration -> Window -> Colours -> Allow terminal to use xterm
    256-colour mode
- - PuTTY configuration $\rightarrow$ Connection $\rightarrow$ Data $\rightarrow$ Terminal-type string $\rightarrow$
+ - PuTTY configuration -> Connection -> Data -> Terminal-type string ->
    xterm-256color
 *** 定制顏色
 我們可以通過以下簡單的腳本來測試和選擇想要的顏色
@@ -300,33 +264,21 @@ bind C-a send-prefix
 
 #+CAPTION: For Future Reference
 #+ATTR_HTML: :border 2 :rules all :frame border
-#+ATTR_LATEX: :environment longtable :align |l|p{9cm}|
-|-------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Command                             | Description                                                                                                                                                                                                                                                            |
 |-------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | set -g prefix C-a                   | Sets the key combination for the Prefix key.                                                                                                                                                                                                                           |
-|-------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | set -sg escape-time n               | Sets the amount of time (in milliseconds) tmux waits for a keystroke after pressing Prefix.                                                                                                                                                                            |
-|-------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | source-file [file]                  | Loads a configuration file. Use this to reload the existing configuration or bring in additional configuration options later.                                                                                                                                          |
-|-------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | bind C-a send-prefix                | Configures tmux to send the prefix when pressing the Prefix combination twice consecutively.                                                                                                                                                                           |
-|-------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | bind-key [key] [command]            | Creates a keybinding that executes the specified command. Can be shortened to bind                                                                                                                                                                                     |
-|-------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | bind-key -r [key] [command]         | Creates a keybinding that is repeatable, meaning you only need to press the Prefix key once, and you can press the assigned key repeatedly afterwards. This is useful for commands where you want to cycle through elements or resize panes. Can be shortened to bind. |
-|-------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | unbind-key [key]                    | Removes a defined keybinding so it can be bound to a different command. Can be shortened to unbind.                                                                                                                                                                    |
-|-------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | display-message or display          | Displays the given text in the status message.                                                                                                                                                                                                                         |
-|-------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | set-option [flags] [option] [value] | Sets options for sessions. Using the -g flag sets the option for all sessions.                                                                                                                                                                                         |
-|-------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | set-window-option [option] [value]  | Sets options for windows, such as activity notifications, cursor movement, or other elements related to windows and panes.                                                                                                                                             |
-|-------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | set -a                              | Appends values onto existing options rather than replacing the option’s value.                                                                                                                                                                                        |
-|-------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 #+TBLFM: 
+
 
 
 * 腳本定制 tmux 環境
@@ -394,8 +346,7 @@ client-server 模型, 來創建一個定制的腳本來自動地構建開發環�
    #+begin_example
      $ ssh-keygen -f ~/.ssh/${developer}_id_rsa
 
-     ## Copy the content of ${developer}_id_rsa.pub to
-     ## 'SSH Keys' in User Settings of gitlab
+     ## Copy the content of ${developer}_id_rsa.pub to 'SSH Keys' in User Settings of gitlab
 
      $ eval "$(ssh-agent -s)"
      $ ssh-add ~/.ssh/${developer}_id_rsa
@@ -460,15 +411,8 @@ after successful review:
 # master branch -> fork -> feature branch -> checkout developer branch -> pull
 # merge request -> master branch merge the feature
 
-# #+CAPTION: Work flow for developer
-# [[file:./develop-flow.png]]
- #+BEGIN_EXPORT latex
- \begin{figure}[H]
-   \centering
-   \includegraphics[scale=1]{develop-flow-crop.pdf}
-   \caption{Work flow for developer}
- \end{figure}
- #+END_EXPORT
+#+CAPTION: Work flow for developer
+[[file:./develop-flow.png]]
 
 
 ** 通過 tmux 自動化
@@ -477,16 +421,9 @@ after successful review:
 來實現自動化: *develop-git.sh* 用來執行 =git clone= 操作, 并調用 *develop.tmux*
 腳本來實現打開 vim[fn:2] 并顯示 branch 信息:
 
-# #+CAPTION: Pane layout for developing
-# [[file:./develop-git.png]]
+#+CAPTION: Pane layout for developing
+[[file:./develop-git.png]]
 
- #+BEGIN_EXPORT latex
- \begin{figure}[H]
-   \centering
-   \includegraphics[scale=1]{develop-git-crop.pdf}
-   \caption{Pnae layout for developing}
- \end{figure}
- #+END_EXPORT
 
 * 文本和緩衝區
 在日常工作中, 使用複製粘貼的次數遠超你的想象. 使用 tmux, 可以通過快捷鍵方便地操
@@ -504,10 +441,10 @@ setw -g mode-keys vi
 
 *** 在緩衝區中快速移動
 通過 vi 的滾屏鍵可以在緩衝區中快速移動, 這些鍵包括:
-- *C-f* 向下翻滾一屏
-- *C-b* 向上翻滾一屏
-- *g* 跳轉到緩衝區歷史的最頂部
-- *G* 跳轉到緩衝區歷史的最底部
+- C-f :: 向下翻滾一屏
+- C-b :: 向上翻滾一屏
+- g :: 跳轉到緩衝區歷史的最頂部
+- G :: 跳轉到緩衝區歷史的最底部
 
 *** 查找緩衝區
 在複製模式中按下 *?* 或 */* 鍵可以向下或向上查找 char/string, 跳轉到下一個匹配按
@@ -520,11 +457,11 @@ setw -g mode-keys vi
 形棧, 每複製一個新的文本, 就會把緩存放在棧的最頂端, 可以通過以下鍵綁定來選擇或操
 作粘貼緩衝區:
 
-- *PREFIX C-s* 顯示粘貼緩衝區內容
-- *PREFIX C-l* 列出複製文本清單
-- *PREFIX C-c* 選擇要複製的文本 (可以通過 j,k 等鍵移動)
-- *PREFIX C-d* 刪除棧頂的文本. 建議使用 =PREFIX :[RET] deleteb -b buffer-name=
-  來刪除指定的緩衝區較好.
+- PREFIX C-s :: 顯示粘貼緩衝區內容
+- PREFIX C-l :: 列出複製文本清單
+- PREFIX C-c :: 選擇要複製的文本 (可以通過 j,k 等鍵移動)
+- PREFIX C-d :: 刪除棧頂的文本. 建議使用 =PREFIX :[RET] deleteb -b buffer-name= 來刪除
+                指定的緩衝區較好.
 
 
 ** 如何創建 tmux 插件
@@ -548,9 +485,9 @@ setw -g mode-keys vi
 *** 創建關於插件的鍵綁定
 我們實現以下鍵綁定功能:
 
-1. *PREFIX M-l* Trigger 終端錄屏 (Meta 是指 Alt 鍵).
-2. *PREFIX M-c* 將當前畫面 dump 下來.
-3. *PREFIX M-h* 將當前窗口或面板的所有歷史輸出保存下來.
+1. =PREFIX M-l= - Trigger 終端錄屏 (Meta 是指 Alt 鍵).
+2. =PREFIX M-c= - 將當前畫面 dump 下來.
+3. =PREFIX M-h= - 將當前窗口或面板的所有歷史輸出保存下來.
 
 因此 *my-logging.tmux* 的內容如下:
 #+begin_src sh
@@ -653,4 +590,4 @@ $ sudo lsof -U | grep '^tmux'
 然建議在項目中使用 vim. vim 8.1 增加了 terminal 功能並且自帶 netrw 插件, 值得花
 時間掌握.
 
-[fn:1] 為了不和之後配置衝突, 已改為 *PREFIX M-p*
+[fn:1] 為了不和之後配置衝突, 已改為 'PREFIX C-p' 
