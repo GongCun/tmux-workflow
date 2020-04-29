@@ -192,46 +192,75 @@ new-window -n cmd "topas"
 #+CAPTION: Commands for Sessions, Windows, and Panes (Details see ~/.tmux.conf)
 #+ATTR_HTML: :border 2 :rules all :frame border
 #+ATTR_LATEX: :environment longtable :align |l|p{8cm}|
-|-----------------------------------+-------------------------------------------------------------------------------------|
-| Command                           | Description                                                                         |
-|-----------------------------------+-------------------------------------------------------------------------------------|
-| tmux new-session                  | Creates a new session without a name. Can be shortened to tmux new or simply tmux.  |
-|-----------------------------------+-------------------------------------------------------------------------------------|
-| tmux new -s development           | Creates a new session called "development".                                         |
-|-----------------------------------+-------------------------------------------------------------------------------------|
-| tmux new -s development -n editor | Creates a session named "development" and names the first window "editor".          |
-|-----------------------------------+-------------------------------------------------------------------------------------|
-| tmux attach -t development        | Attaches to a session named "development".                                          |
-|-----------------------------------+-------------------------------------------------------------------------------------|
-| tmux list-keys                    | List key bindings.                                                                  |
-|-----------------------------------+-------------------------------------------------------------------------------------|
-| PREFIX d                          | Detaches from the session, leaving the session running in the background.           |
-|-----------------------------------+-------------------------------------------------------------------------------------|
-| PREFIX :                          | Enters Command mode.                                                                |
-|-----------------------------------+-------------------------------------------------------------------------------------|
-| PREFIX c                          | Creates a new window from within an existing tmux session. Shortcut for new-window. |
-|-----------------------------------+-------------------------------------------------------------------------------------|
-| PREFIX 0..9                       | Selects windows by number.                                                          |
-|-----------------------------------+-------------------------------------------------------------------------------------|
-| PREFIX w                          | Displays a selectable list of windows in the current session.                       |
-|-----------------------------------+-------------------------------------------------------------------------------------|
-| PREFIX ,                          | Displays a prompt to rename a window.                                               |
-|-----------------------------------+-------------------------------------------------------------------------------------|
-| PREFIX &                          | Closes the current window after prompting for confirmation.                         |
-|-----------------------------------+-------------------------------------------------------------------------------------|
-| PREFIX -                          | Divides the current window in half horizontally.                                    |
-|-----------------------------------+-------------------------------------------------------------------------------------|
-| PREFIX \vert                      | Divides the current window in half vertically.                                      |
-|-----------------------------------+-------------------------------------------------------------------------------------|
-| PREFIX o                          | Cycles through open panes.                                                          |
-|-----------------------------------+-------------------------------------------------------------------------------------|
-| PREFIX SPC                        | Cycles through the various pane layouts.                                            |
-|-----------------------------------+-------------------------------------------------------------------------------------|
-| PREFIX x                          | Closes the current pane after prompting for confirmation.                           |
-|-----------------------------------+-------------------------------------------------------------------------------------|
-| PREFIX C-q                        | Momentarily displays pane numbers in each pane.                                     |
-|-----------------------------------+-------------------------------------------------------------------------------------|
-
+|-----------------------------------+---------------------------------------------------------------------------|
+| Command                           | Description                                                               |
+|-----------------------------------+---------------------------------------------------------------------------|
+| tmux new-session                  | Creates a new session without a name.                                     |
+|-----------------------------------+---------------------------------------------------------------------------|
+| tmux new -s <session>             | Creates a new session with session name.                                  |
+|-----------------------------------+---------------------------------------------------------------------------|
+| tmux new -s <session> -n <window> | Creates a session and names the first window.                             |
+|-----------------------------------+---------------------------------------------------------------------------|
+| tmux attach -t <session>          | Attaches to a session.                                                    |
+|-----------------------------------+---------------------------------------------------------------------------|
+| tmux list-keys                    | List key bindings.                                                        |
+|-----------------------------------+---------------------------------------------------------------------------|
+| tmux kill-session -t <session>    | Kill session.                                                             |
+|-----------------------------------+---------------------------------------------------------------------------|
+| PREFIX d                          | Detaches from the session, leaving the session running in the background. |
+|-----------------------------------+---------------------------------------------------------------------------|
+| PREFIX :                          | Enters Command mode.                                                      |
+|-----------------------------------+---------------------------------------------------------------------------|
+| PREFIX -                          | Divides the current window in half horizontally.                          |
+|-----------------------------------+---------------------------------------------------------------------------|
+| PREFIX \vert                      | Divides the current window in half vertically.                            |
+|-----------------------------------+---------------------------------------------------------------------------|
+| PREFIX o                          | Cycles through open panes.                                                |
+|-----------------------------------+---------------------------------------------------------------------------|
+| PREFIX SPC                        | Cycles through the various pane layouts.                                  |
+|-----------------------------------+---------------------------------------------------------------------------|
+| PREFIX {                          | Move the current pane lest                                                |
+|-----------------------------------+---------------------------------------------------------------------------|
+| PREFIX }                          | Move the current pane right                                               |
+|-----------------------------------+---------------------------------------------------------------------------|
+| PREFIX !                          | Break pane into window                                                    |
+|-----------------------------------+---------------------------------------------------------------------------|
+| PREFIX x                          | Closes the current pane after prompting for confirmation.                 |
+|-----------------------------------+---------------------------------------------------------------------------|
+| PREFIX C-q                        | Momentarily displays pane numbers in each pane.                           |
+|-----------------------------------+---------------------------------------------------------------------------|
+| PREFIX :new<Ret>                  | Creates new session                                                       |
+|-----------------------------------+---------------------------------------------------------------------------|
+| PREFIX s                          | List sessions                                                             |
+|-----------------------------------+---------------------------------------------------------------------------|
+| PREFIX $                          | Name session                                                              |
+|-----------------------------------+---------------------------------------------------------------------------|
+| PREFIX c                          | Creates a new window from within an existing tmux session.                |
+|-----------------------------------+---------------------------------------------------------------------------|
+| PREFIX w                          | Displays a selectable list of windows in the current session.             |
+|-----------------------------------+---------------------------------------------------------------------------|
+| PREFIX ,                          | Displays a prompt to rename a window.                                     |
+|-----------------------------------+---------------------------------------------------------------------------|
+| PREFIX 0..9                       | Selects windows by number.                                                |
+|-----------------------------------+---------------------------------------------------------------------------|
+| PREFIX &                          | Closes the current window after prompting for confirmation.               |
+|-----------------------------------+---------------------------------------------------------------------------|
+| PREFIX f                          | Find window                                                               |
+|-----------------------------------+---------------------------------------------------------------------------|
+| PREFIX H                          | Resizes the current pane left 5 SPC                                       |
+|-----------------------------------+---------------------------------------------------------------------------|
+| PREFIX L                          | Resizes the current pane right 5 SPC                                      |
+|-----------------------------------+---------------------------------------------------------------------------|
+| PREFIX j                          | Resizes the current pane down 5 SPC                                       |
+|-----------------------------------+---------------------------------------------------------------------------|
+| PREFIX k                          | Resizes the current pane upward 5 SPC                                     |
+|-----------------------------------+---------------------------------------------------------------------------|
+| PREFIX M-l                        | Logging the current pane                                                  |
+|-----------------------------------+---------------------------------------------------------------------------|
+| PREFIX M-c                        | Captures the current pane                                                 |
+|-----------------------------------+---------------------------------------------------------------------------|
+| PREFIX M-h                        | Dump the history output of the current pane                               |
+|-----------------------------------+---------------------------------------------------------------------------|
 * 配置 tmux 
 在默認情況下, tmux 會在兩個位置查找配置文件. 首先查找 ~/.tmux.conf 作為系統配
 置, 然後在當前用戶的主目錄下查找 /etc/tmux.conf 文件.
@@ -325,6 +354,8 @@ bind C-a send-prefix
 | set-window-option [option] [value]  | Sets options for windows, such as activity notifications, cursor movement, or other elements related to windows and panes.                                                                                                                                             |
 |-------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | set -a                              | Appends values onto existing options rather than replacing the option’s value.                                                                                                                                                                                        |
+|-------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| run-shell                           | Execute shell-command in the background without creating a window.                                                                                                                                                                                                     |
 |-------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 #+TBLFM: 
 
@@ -644,7 +675,154 @@ $ tmux -S /var/tmux/pairing attach
 $ sudo lsof -U | grep '^tmux'
 #+end_example
 
+* tmux 同類軟件
+tmux 採用的終端技術可以追溯到古老的 [[https://core.tcl-lang.org/expect/index][Expect]]. Expect 是一種 Tcl 方言, 通過在用戶輸
+入和偽終端 (pseudo-terminal) 之間架設精巧的腳本語言實現交互自動化. Expect 非常強
+大, 但隨著 Tcl 語言的衰落而逐漸淡出歷史, 而隨後又被不斷發明. Don Libes 在
+[[https://archive.org/details/exploringexpectt00libe][Exploring Expect]] 一書對如何通過 expect 實現多進程交互和disconnect/reconnect 終端
+進程有精彩的講解, 採用的方法是如此經典 (通過一對 fifo 具名管道實現用戶和進程的通信),
+直接啟發了 tmux的 detach/attach 功能. 在 Expect 中可以調用 *mkfifo* 創建一對具名
+管道:
+
+- *infifo* 將用戶輸入 (i.e., keystrokes) 發送到終端進程.
+- *outfifo* 將終端進程產生的數據發送給用戶.
+
+因此對於 disconnected (detached) 的終端進程, 其狀態如下:
+
+ #+BEGIN_EXPORT latex
+ \begin{figure}[H]
+   \centering
+   \includegraphics[scale=1]{disconn-crop.pdf}
+   \caption{detached}
+ \end{figure}
+ #+END_EXPORT
+# [[file:./disconn.png]]
+
+而用戶 reconnect (attach) 時, 其狀態如下:
+
+ #+BEGIN_EXPORT latex
+ \begin{figure}[H]
+   \centering
+   \includegraphics[scale=1]{reconn-crop.pdf}
+   \caption{attached}
+ \end{figure}
+ #+END_EXPORT
+# [[file:./reconn.png]]
+
+tmux 在 expect 的基礎上實現了在 interactive 狀態下可以 detach 會話 (而不僅僅是在
+spawn 結束時自動 detach/attach), 並且通過 unix domain socket 雙向管道替代了 fifo
+單向管道.
+
+** screen
+Screen 也是 tmux 的先驅之一, 雖然 screen 的可擴展性不如 tmux, 但是 screen 和
+emacs 結合的更好一點 (至少我感到在 screen 裡運行 emacs 比在 tmux 中快), 同時
+screen 對 session 具有密碼保護功能. Screen 在 AIX 上同樣有安裝問題, 要手動修改一
+些代碼并重新編譯才能正確顯示xterm-256color終端[fn:4]. 編譯命令如下:
+#+begin_src sh 
+  ./autogen.sh
+
+  ## fix the symbol mistake in the following scripts
+  ## osdef.h, layer.c, layout.c, then go on.
+
+  ./configure --prefix=/usr/local --enable-colors256 \
+              LDFLAGS="-L/usr/local/lib -L/opt/freeware/lib" \
+              CPPFLAGS="-I/opt/freeware/include/ncurses" LIBS="-lncurses" CC=xlc
+
+  gmake -j4
+  gmake install
+#+end_src
+
+同樣在 *~/.screenrc* 中需要做一些配置才能與 vim 等兼容, 我在 screen 中將 PREFIX
+綁定為 *C-\*:
+#+BEGIN_EXAMPLE
+escape ^|^|
+maptimeout 5
+term xterm-256color
+#+END_EXAMPLE
+
+同樣 screen 也有以下速查表
+
+#+CAPTION: Screen Quick Reference
+#+ATTR_HTML: :border 2 :rules all :frame border
+#+ATTR_LATEX: :environment longtable :align |l|p{8cm}|
+|-----------------------------+-------------------------------------------|
+| Command                     | Description                               |
+|-----------------------------+-------------------------------------------|
+| screen -S <session>         | Start a new session with session name     |
+|-----------------------------+-------------------------------------------|
+| screen -ls                  | List running sessions / screens           |
+|-----------------------------+-------------------------------------------|
+| screen -x <session>         | Attach to a running session               |
+|-----------------------------+-------------------------------------------|
+| screen -r <session>         | Attach to a running session with name     |
+|-----------------------------+-------------------------------------------|
+| screen -d <session>         | Detach a running session                  |
+|-----------------------------+-------------------------------------------|
+| screen -d -r <session>      | Detach all running session then attach it |
+|-----------------------------+-------------------------------------------|
+| screen -X -S <session> quit | Delete detached session                   |
+|-----------------------------+-------------------------------------------|
+| screen -S <session> cmd     | Start a new session to run the command    |
+|-----------------------------+-------------------------------------------|
+| PREFIX ?                    | See help                                  |
+|-----------------------------+-------------------------------------------|
+| PREFIX c                    | Create new window                         |
+|-----------------------------+-------------------------------------------|
+| PREFIX 0..9                 | Change to window by number                |
+|-----------------------------+-------------------------------------------|
+| PREFIX ' <number or title>  | Change to window by number or name        |
+|-----------------------------+-------------------------------------------|
+| PREFIX n or PREFIX SPC      | Change to next window in list             |
+|-----------------------------+-------------------------------------------|
+| PREFIX p or PREFIX BACK     | Change to previous window in list         |
+|-----------------------------+-------------------------------------------|
+| PREFIX "                    | See window list                           |
+|-----------------------------+-------------------------------------------|
+| PREFIX k                    | Kill current window                       |
+|-----------------------------+-------------------------------------------|
+| PREFIX \                    | Kill all windows                          |
+|-----------------------------+-------------------------------------------|
+| PREFIX A                    | Rename current window                     |
+|-----------------------------+-------------------------------------------|
+| PREFIX S                    | Split display horizontally                |
+|-----------------------------+-------------------------------------------|
+| PREFIX \vert                | Split display vertically                  |
+|-----------------------------+-------------------------------------------|
+| PREFIX TAB                  | Jump to next display region               |
+|-----------------------------+-------------------------------------------|
+| PREFIX C-l                  | Redraw window                             |
+|-----------------------------+-------------------------------------------|
+| PREFIX [ or PREFIX ESC      | Enter copy mode (press enter to copy)     |
+|-----------------------------+-------------------------------------------|
+| PREFIX ]                    | Paste                                     |
+|-----------------------------+-------------------------------------------|
+| PREFIX h                    | Copy the current window                   |
+|-----------------------------+-------------------------------------------|
+| PREFIX H                    | Enable logging in the screen session      |
+|-----------------------------+-------------------------------------------|
+| PREFIX :hardcopy -h <file>  | Copy the whole buffer to file             |
+|-----------------------------+-------------------------------------------|
+| PREFIX :password            | Give session a password                   |
+|-----------------------------+-------------------------------------------|
+| PREFIX X                    | To close split windows                    |
+|-----------------------------+-------------------------------------------|
+
+Screen 進入 copy 模式之後, 支持 vi 的移動鍵, 按下 Enter 鍵之後, 即開始選擇要複製
+的文本, 移動並選擇好之後, 再按下 Enter 鍵即將其複製到 screen 的剪貼板, 按下
+PREFIX ] 即為粘貼. Screen 支持對 session 加密, 因此按下 =PREFIX :password= 命令
+之後, 輸入密碼 (密碼經 crypt 算法加密), 即被自動copy到 screen 剪貼板, 然後在
+screen 中打開 ~/.screenrc 文件, 按 =PREFIX ]= 將密碼貼入, 形式如下:
+#+BEGIN_EXAMPLE
+password *encrypted-password*
+#+END_EXAMPLE
+然後按下 =PREFIX :source ~/.screenrc= 生效配置.
+
+
 * Footnotes
+
+[fn:4] 可能是由於 AIX 上的 GNU autoconf 工具版本較舊, 或者 screen 沒有在 AIX 系
+統上經過充分的測試, 導致生成的 osdef.h, layout.c, layer.c 等文件中的宏定義不正確,
+手工清理后可以編譯通過.
 
 [fn:3] 這裡的概念非常類似 emacs. 雖然 tmux 和 vi 模式結合得較好, 但是 tmux 的作
 者其實是 emacs 用戶, 這是我之前在他的某篇文章中看到的.
