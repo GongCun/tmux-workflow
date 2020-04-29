@@ -686,6 +686,7 @@ term xterm-256color
 | PREFIX :hardcopy -h <file>  | Copy the whole buffer to file             |
 | PREFIX :password            | Give session a password                   |
 | PREFIX :sessionname <name>  | Rename session name                       |
+| C-a a                       | Send the command character (C-a)          |
 | PREFIX X                    | To close split windows                    |
 |-----------------------------+-------------------------------------------|
 
